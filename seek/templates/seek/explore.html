@@ -1,0 +1,50 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<div class="row overflow-x-hidden">
+    <div class="sidebar col-lg-2 col-sm-12 bg-dark pt-3 overflow-x-hidden">
+        <p class="text-white px-3">Filter By Category</p>
+        <hr>
+        <form action="{% url 'explore' %}"  class="mx-3 py-2 w-auto">
+            <input type='text' name=q placeholder="search" class="form-control"/>
+        </form>
+        <div class="px-3">
+            <i class="fa-solid fa-house text-white"></i>
+            <a href="{% url 'explore' %}" class="text-decoration-none px-1">Home</a>
+        </div>
+        {% for item in category%}
+        <div class="px-3 d-flex">
+            <p class="text-white">{{item.category_icon | safe}}</p>
+            <a href="{% url 'explore' %}?q={{item.category_name}}" class="text-decoration-none mx-2">{{item.category_name}}</a>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="container side-content col-lg-10 col-sm-9 pt-3 overflow-x-hidden">
+      <p class="text-center">{{search_count}} Business(es) Found</p>
+      <div class="container px-0 py-5">
+        <h3 class="text-center text-muted">Featured Businesses</h3>
+        {% if businesses.count > 0 %}
+            <div class="row container w-100">
+                {% for business in businesses %}
+                <div class="col-sm-6 col-md-4 mt-2 rounded-3">
+                    <a href="{% url 'business' business.business_name %}" class="text-decoration-none text-dark">
+                        <div class="card">
+                            <img src="{{business.business_cover.url}}" class="img-fluid object-fit-contain border-top-3" alt="..." height="200">
+                            <div class="card-body">
+                                <h5 class="card-title">{{business.business_name}}</h5>
+                                <p class="card-text text-truncate">{{business.business_description}}</p>
+                                <a href="{% url 'business' business.business_name %}" class="btn btn-dark">View</a>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>There Are No Results Found</p>
+        {% endif %}    
+    </div>
+</div>
+{% endblock content %}
+    

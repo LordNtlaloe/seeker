@@ -1,0 +1,14 @@
+{% extends 'main.html' %}
+
+{% block content %}
+    <div class="container py-3">
+        <h3>Register</h3>
+        <form method='POST' action='' enctype='multipart/form-data'>
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type='submit' value='Register' class="btn btn-dark"/>
+        </form>
+        <p>Already Have An Account? Login <a href="{% url 'login' %}" class="text-decoration-none text-primary">Here.</a><p>
+    </div>
+{% endblock content %}
+    

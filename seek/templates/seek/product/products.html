@@ -1,0 +1,53 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<div class="row overflow-x-hidden">
+    <div class="sidebar col-lg-2 col-sm-12 bg-dark pt-3 overflow-x-hidden">
+        <p class="text-white px-3">Filter By Businesses</p>
+        <hr>
+        <form action="{% url 'products' %}"  class="mx-3 py-2 w-auto">
+            <input type='text' name=q placeholder="search" class="form-control"/>
+        </form>
+        <div class="px-3">
+            <i class="fa-solid fa-house text-white"></i>
+            <a href="{% url 'products' %}" class="text-decoration-none px-1">Home</a>
+        </div>
+        {% for item in business %}
+        <div class="px-3 py-1 d-flex">
+            <p>
+                <img src="{{item.business_cover.url}}" width="25" height="25" class="rounded-circle"/>
+            </p>
+            <a href="{% url 'products' %}?q={{item.business_name}}" class="text-decoration-none mx-2">{{item.business_name}}</a>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="container side-content col-lg-10 col-sm-9 pt-3 overflow-x-hidden">
+      <p class="text-center">{{search_count}} Product(s) Found</p>
+      <div class="container px-0 py-5">
+        <h3 class="text-center text-muted">List Of Products</h3>
+        {% if products.count > 0 %}
+            <div class="row container home-container">
+                {% for product in products %}
+                <div class="col-sm-6 col-md-4">
+                    <div class="card products">
+                        <img src="{{product.product_image.url}}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">{{product.product_name}}</h5>
+                            <p class="card-text text-truncate">{{product.product_description}}</p>
+                                <div class="d-flex justify-content-between">
+                                <p>M{{product.product_price|floatformat:2}}</p>
+                                <button data-product="{{product.id}}" data-action="add" class="btn btn-primary add-btn update-cart">Add To Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>There Are No Products yet</p>
+        {% endif %}    
+    </div>
+</div>
+{% endblock content %}
+    

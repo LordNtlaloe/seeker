@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
+        alert('Still In Development. We doing tests before official deployment')
+    </script>
+    <script type="text/javascript">
+        var user = '{{request.user}}';
+
+        function getToken(name){
+            var cookieValue = null;
+            if(document.cookie && document.cookie !== ''){
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++){
+                    var cookie = cookies[i].trim();
+
+                    if(cookie.substring(0, name.length + 1) === (name + '=')){
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getToken('csrftoken');
+
+        function getCookie(name){
+            var cookieArray = document.cookie.split(';')
+
+            for(var i = 0; i < cookieArray.length; i++){
+                var cookiePair = cookieArray[i].split('=');
+
+                if(name === cookiePair[0].trim()){
+                    return decodeURIComponent(cookiePair[1])
+                }
+            }
+
+            return null;
+        }
+        var cart = JSON.parse(getCookie('cart'))
+
+        if(cart == undefined){
+            cart = {}
+            console.log('Cart Created')
+            document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/"
+        }
+        console.log('Cart: ', cart)
+    </script>
+    <title>Seeker</title>
+</head>
+<body>
+    {% include 'navbar.html' %}
+    {% block content %}
+
+    {% endblock %}
+    {% if messages %}
+        <ul class='messages'>
+            {% for message in messages %}
+                <li>
+                    {{message}}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <script src="{% static 'js/main.js' %}"></script>
+    <script>
+        var shipping = '{{order.shipping}}'
+        if(shipping == 'False'){
+            document.getElementById('shipping-info').innerHTML = ''
+        } 
+    </script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
+</body>
+</html>

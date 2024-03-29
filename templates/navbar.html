@@ -1,0 +1,55 @@
+<!-- Navbar -->
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-bars text-white"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <a class="navbar-brand mt-2 mt-lg-0 d-flex align-items-center" href="#">
+                <i class="fa-regular fa-compass text-white display-6 px-2"></i>
+                Seeker
+            </a>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'explore' %}">Explore</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'products' %}">Products</a>
+                </li>
+            </ul>
+      </div>
+      <div class="d-flex align-items-center text-white">
+        <a class="me-3 text-white text-decoration-none" href="{% url 'cart' %}">
+            <i class="text-white fas fa-shopping-cart"></i>
+            <span class="badge roundedbg-dark-pill badge-notification bg-danger">{{cartItems}}</span>
+        </a>
+        <div class="dropdown bg-dark">
+            <a class="dropdown-toggle d-flex align-items-center hidden-arrow" href="#" id="navbarDropdownMenuAvatar" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle" height="25" alt="Black and White Portrait of a Man" loading="lazy" />
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end bg-dark" aria-labelledby="navbarDropdownMenuAvatar">
+                <li>
+                    <a class="dropdown-item" href="{% url 'profile' user.id %}">{{user.username}}</a>
+                </li>
+                
+                {% if user.is_authenticated %}
+                <li>
+                    <a class="dropdown-item text-white" href="{% url 'logout' %}">Logout</a>
+                </li>
+                {% else %}
+                <li>
+                    <a class="dropdown-item text-white" href="{% url 'login' %}">Login</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+      <!-- Right elements -->
+</div>
+    <!-- Container wrapper -->
+  </nav>
+  <!-- Navbar -->

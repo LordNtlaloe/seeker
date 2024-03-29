@@ -1,0 +1,311 @@
+{% extends "main.html" %}
+{% block content %}
+
+<header class="masthead text-white text-center">
+    <div class="overlay">
+        <div class="container" style="background: {{business.business_cover.url}}">
+            <div class="row">
+                <div class="col-xl-9 mx-auto">
+                    <h1 class="mb-5">Build a landing page for your business or project and generate more leads!</h1>
+                </div>
+                <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+                    <form action="{% url 'explore' %}">
+                        <div class="form-row">
+                            <div class="col-12 col-md-9 mb-2 mb-md-0">
+                                <input type="text" class="form-control form-control-lg" placeholder="Search..." name=q>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Tab links -->
+<nav class="w-100 flex-column flex-sm-row nav-justified home-container">
+    <div class="nav nav-tabs bg-dark flex-column flex-sm-row nav-justified" id="nav-tab" role="tablist">
+        <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Details</button>
+        <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Products</button>
+        <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Reviews</button>
+    </div>
+    <div class="container-fluid px-5">
+        <div class="row py-5 m-auto align-items-center justify-content-center">
+            <a href="" class="btn btn-outline-dark rounded-pill my-1 col-lg-2 col-md-12 mx-2">
+                <i class="fa-solid fa-location-dot px-2"></i>Get Directions
+            </a>
+            <a href="" class="btn btn-outline-dark rounded-pill my-1 col-lg-2 col-md-12 mx-2">
+                <i class="fa-solid fa-phone px-2"></i>Call Now
+            </a>
+            <a href="" class="btn btn-outline-dark rounded-pill my-1 col-lg-2 col-md-12 mx-2">
+                <i class="fa-solid fa-share px-2"></i>Share
+            </a>
+            <a href="" class="btn btn-outline-dark rounded-pill my-1 col-lg-2 col-md-12 mx-2">
+                <i class="fa-solid fa-message px-2"></i>Leave A Review
+            </a>  
+        <div>
+    </div>
+</nav>
+
+<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active home-container" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+        <div class="row p-lg-5 p-md-1 p-sm-1">
+            <div class="col-lg-6 col-sm-12 py-auto m-auto col-md-12">
+                <div class="description container bg-white p-2 rounded-3 col">
+                    <h6 class=""><i class="fa-solid fa-bars text-muted px-2"></i>Description</h6>
+                    <p class="px-2">{{business.business_description}}</p>
+                </div>
+                <div class="location container bg-white my-3 p-2 rounded-3 col">
+                    <h6 class=""><i class="fa-solid fa-location-dot text-muted px-2"></i>Location</h6>
+                    <div id="map" class="map rounded-3 mx-3"></div>
+                </div>
+                <div class="socials container bg-white my-3 p-2 rounded-3 col">
+                    <h6 class=""><i class="fa-solid fa-wifi text-muted px-2"></i>Social Media</h6>
+                    <div class="d-flex justify-content-between container p-2">
+                        {% for social in socials %}
+                            <div class="facebook">
+                                <i class="fa-brands fa-{{social.platform_name}}"></i>
+                                <a href="{{social.platform_link}}" class="text-dark text-decoration-none">{{social.platform_name}}</a>
+                            </div>
+                        {% endfor %}
+                        {% comment %} <div class="facebook">
+                            <i class="fa-brands fa-facebook"></i>
+                            <a href="{{socials.facebook}}" class="text-dark text-decoration-none">Facebook</a>
+                        </div>
+                        <div class="twitter">
+                            <i class="fa-brands fa-x-twitter"></i>
+                            <a href="{{socials.twitter}}" class="text-dark text-decoration-none">Twitter</a>
+                        </div>
+                        <div class="instagram">
+                            <i class="fa-brands fa-instagram"></i>
+                            <a href="{{socials.instagram}}" class="text-dark text-decoration-none">Instagram</a>
+                        </div> {% endcomment %}
+                    </div>
+                    {% if request.user == business.user %}
+                        <div class="d-flex m-auto">
+                            <a href="{% url 'add-socials' business.business_name %}" class="text-dark text-decoration-none">
+                                <i class="fa-solid fa-plus px-2"></i>Add Social Media Accounts
+                            </a>
+                            {% comment %} <a href="{% url 'edit-product' business.business_name product.id %}" class="text-dark text-decoration-none">
+                                <i class="fa-solid fa-pencil px-2"></i>Edit
+                            </a>
+                            <a href="{% url 'delete-product' business.business_name product.id %}" class="text-dark text-decoration-none">
+                                <i class="fa-solid fa-trash px-2"></i>
+                                Delete
+                            </a> {% endcomment %}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="region container bg-white my-3 p-2 rounded-3 col">
+                    <h6 class=""><i class="fa-solid fa-location-dot text-muted px-2"></i>Region</h6>
+                    <p class="p-2">{{business.business_location}}</p>
+                </div>
+            </div>
+            <div class="col-lg-6 col-sm-12 py-auto col-md-12">
+                <div class="description bg-white rounded col">
+                    <div class="accordion" id="accordionExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed border-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    <h6 class=""><i class="fa-solid fa-clock text-muted px-2"></i>Opening Hours</h6>
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    
+                                    <ul class="list-group list-group-flush">
+                                        {% for hour in hours %}
+                                            <li class="list-group-item">Mon - Fri: {{hour.monday_open}} - {{hour.monday_close}}</li>
+                                            <li class="list-group-item">Sat & Sun: {{hour.saturday_open}} - {{hour.saturday_close}}</li>
+                                        {% endfor %}
+                                      </ul>
+                                </div>
+                                {% if request.user == business.user %}
+                                    <div class="d-flex m-auto">
+                                        <a href="{% url 'add-opening-hours' business.business_name %}" class="text-dark text-decoration-none">
+                                            <i class="fa-solid fa-plus px-2"></i>Add Opening Hours
+                                        </a>
+                                        {% comment %} <a href="{% url 'edit-product' business.business_name product.id %}" class="text-dark text-decoration-none">
+                                            <i class="fa-solid fa-pencil px-2"></i>Edit
+                                        </a>
+                                        <a href="{% url 'delete-product' business.business_name product.id %}" class="text-dark text-decoration-none">
+                                            <i class="fa-solid fa-trash px-2"></i>
+                                            Delete
+                                        </a> {% endcomment %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="region container bg-white my-3 p-2 rounded-3 col">
+                    <h6 class=""><i class="fa-solid fa-image text-muted px-2"></i>Gallary</h6>
+                    <section class="">
+                        <!-- Section: Images -->
+                        <section class="">
+                            <div class="row">
+                                <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
+                                    <div class="bg-image hover-overlay ripple shadow-1-strong p-2 rounded-3" data-ripple-color="light">
+                                        <img src="https://mdbcdn.b-cdn.net/img/screens/yt/screen-video-1.webp" class="w-100 rounded-3"/>
+                                        <a href="#!" data-mdb-toggle="modal" data-mdb-target="#exampleModal1">
+                                            <div class="mask" style="background-color: rgba(251, 251, 251, 0.2);"></div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 mb-4 mb-lg-0">
+                                    <div class="bg-image hover-overlay ripple shadow-1-strong rounded" data-ripple-color="light">
+                                        <img src="https://mdbcdn.b-cdn.net/img/screens/yt/screen-video-2.webp" class="w-100 rounded-3"/>
+                                        <a href="#!" data-mdb-toggle="modal" data-mdb-target="#exampleModal2">
+                                            <div class="mask" style="background-color: rgba(251, 251, 251, 0.2);"></div>
+                                        </a>
+                                    </div>
+                                </div>
+                
+                                <div class="col-lg-4 mb-4 mb-lg-0">
+                                    <div class="bg-image hover-overlay ripple shadow-1-strong rounded" data-ripple-color="light">
+                                        <img src="https://mdbcdn.b-cdn.net/img/screens/yt/screen-video-3.webp" class="w-100 rounded-3"/>
+                                        <a href="#!" data-mdb-toggle="modal" data-mdb-target="#exampleModal3">
+                                            <div class="mask" style="background-color: rgba(251, 251, 251, 0.2);"></div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </section>
+                </div>
+                <div class="region container bg-white my-3 p-2 rounded-3 col">
+                    <h6 class=""><i class="fa-solid fa-list text-muted px-2"></i>Category</h6>
+                    <div class="d-flex p-2 align-items-center">
+                        <p class="text-white bg-danger px-2 py-2 rounded-circle h5">{{business.category.category_icon|safe}}</p>
+                        <p class="px-2">{{business.category.category_name}}</p>
+                    </div>
+                </div>
+                {% if request.user == business.user %}
+                <div class="region container bg-white my-3 p-2 rounded-3">
+                    <h6 class=""><i class="fa-solid fa-building text-muted px-2"></i>Manage Business</h6>
+                    <div class="d-flex m-auto">
+                        <a href="{% url 'edit-business' business.business_name %}" class="text-dark text-decoration-none">
+                            <i class="fa-solid fa-pencil px-2"></i>Edit
+                        </a>
+                        <a href="{% url 'delete-business' business.id %}" class="text-dark text-decoration-none">
+                            <i class="fa-solid fa-trash px-2"></i>
+                            Delete
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane fade home-container" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+        <h3 class="mt-2 text-center home-container">Products</h3>
+        {% if products.count > 0 %}
+            <div class="row container home-container">
+                {% for product in products %}
+                <div class="col-sm-6 col-md-4">
+                    <div class="card products">
+                        <img src="{{product.product_image.url}}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">{{product.product_name}}</h5>
+                            <p class="card-text text-truncate">{{product.product_description}}</p>
+                                <div class="d-flex justify-content-between">
+                                <p>M{{product.product_price|floatformat:2}}</p>
+                                <button data-product="{{product.id}}" data-action="add" class="btn btn-primary add-btn update-cart">Add To Cart</button>
+                            </div>
+                        </div>
+                        {% if request.user == business.user %}
+                            <div class="d-flex m-auto">
+                                <a href="{% url 'add-product' business.business_name %}" class="text-dark text-decoration-none">
+                                    <i class="fa-solid fa-plus px-2"></i>Add New Product
+                                </a>
+                                <a href="{% url 'edit-product' business.business_name product.id %}" class="text-dark text-decoration-none">
+                                    <i class="fa-solid fa-pencil px-2"></i>Edit
+                                </a>
+                                <a href="{% url 'delete-product' business.business_name product.id %}" class="text-dark text-decoration-none">
+                                    <i class="fa-solid fa-trash px-2"></i>
+                                    Delete
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>There Are No Products yet</p>
+        {% endif %}
+    </div>
+    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+        <h3>Reviews</h3>
+        {% if reviews.count > 0 %}
+            {% for review in reviews %}
+            <div>
+                {% if request.user == review.user %}
+                    <a href="{% url 'delete-review' review.id %}">Delete</a>
+                {% endif %}
+                <span><a href="{% url 'profile' review.user.id %}">@{{review.user}}</a> {{review.created_at|timesince}} ago</span>
+                <span>{{review.message}}</span>
+                <span>Overall Ratings: {{review.overall_ratings}}/5</span>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>There Are No Reviews Yet</p>
+        {% endif %}
+
+        {% if request.user.is_authenticated %}
+        <div class="review-form">
+            <form method="POST" action="">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="message" class="form-label">Comments:</label>
+                    <input type="text" name="message" class="form-control" id="message" placeholder="Write Your Comments Here...">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+</div>
+<script>
+    var map = L.map('map').setView([51.505, -0.09], 13);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    navigator.geolocation.watchPosition(success, error);
+
+    let marker;
+    let circle;
+    let zoomed;
+    
+    function success(pos){
+        const lat = pos.coords.latitude;
+        const long = pos.coords.longitude;
+        const accuracy = pos.coords.accuracy;
+
+        if(marker){
+            map.removeLayer(marker);
+            map.removeLayer(circle);
+        }
+
+        marker = L.marker([lat, long]).addTo(map);
+        circle = L.circle([lat, long], {radius: accuracy}).addTo(map);
+
+        if(!zoomed){
+            zoomed = map.fitBounds(circle.getBounds());            
+        }
+
+        map.setView([lat, long])
+        
+    }
+
+    function error(err){
+        if(err.code === 1){
+            alert("Please Allow Geolocation Access");
+        }
+        else{
+            alert("Cannot Get Location");
+        }
+    }
+</script>
+{% endblock %}

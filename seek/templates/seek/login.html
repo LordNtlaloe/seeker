@@ -1,0 +1,21 @@
+{% extends 'main.html' %}
+
+{% block content %}
+    <div class="container py-3">
+        <h3 class="text-center">Login</h3>
+        <form method='POST' action='' >
+            {% csrf_token %}
+            <div class="form-group py-1">
+                <label for='email'>Email</label>
+                <input type='text' name='email' class="form-control" />
+            </div>
+            <div class="form-group py-1">
+                <label for='password'>Password</label>
+                <input type='password' name='password' class="form-control"/>
+            </div>
+            <input type='submit' value='Login' class="btn btn-dark my-2"/>
+        </form>
+        <p>Don't Have An Account? Register <a href="{% url 'register' %}" class="text-primary text-decoration-none">Here.</a></p>
+    </div>
+{% endblock content %}
+    

@@ -1,0 +1,11 @@
+{% include 'main.html' %}
+{% block content %}
+    <div class="container my-5 mx-auto">
+        <h3>Create/Update Products</h3>
+        <form method='POST' action='' enctype="multipart/form-data" class="text-decoration-none text-dark">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type='submit' value='Submit' class="btn btn-dark"/>
+        </form>
+    </div>
+{% endblock content %}
